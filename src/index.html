@@ -19,18 +19,34 @@
     <script>
         //Create the map
         var map = [];
-        map[0] = "An old house.";
+        map[0] = "A sleeping Gorgon.";
         map[1] = "A dark cave. An old witch guards the entrance.";
-        map[2] = "A mountain pass.";
-        map[3] = "A sleeping Gorgon.";
-        map[4] = "A narrow pathway.";
-        map[5] = "An ancient gate.";
-        map[6] = "The edge of a river.";
-        map[7] = "A lonely stone bench.";
-        map[8] = "An isolated taverna. Faint music comes from inside.";
+        map[2] = "An ancient gate.";
+        map[3] = "A mountain pass.";
+        map[4] = "The forge of Vulcan.";
+        map[5] = "A mountain pass.";
+        map[6] = "A forest.";
+        map[7] = "A town that lies in ruins.";
+        map[8] = "An open field of grass.";
+        map[9] = "A forest.";
+        map[10] = "An old house.";
+        map[11] = "A field of flowers.";
+        map[12] = "A narrow pathway.";
+        map[13] = "A broken cart.";
+        map[14] = "A swamp.";
+        map[15] = "The edge of a river.";
+        map[16] = "A watch tower.";
+        map[17] = "A stone bench.";
+        map[18] = "An isolated taverna. Faint music comes from inside.";
+        map[19] = "A ruined temple.";
+        map[20] = "A cliff.";
+        map[21] = "The ocean.";
+        map[22] = "An empty ship port.";
+        map[23] = "A cliff that overlooks the ocean.";
+        map[24] = "A shipwreck.";
 
         //Set the player's start location
-        var mapLocation = 4;
+        var mapLocation = 12;
 
         //Set the images
         var images = [];
@@ -43,6 +59,22 @@
         images[6] = "river.jpg";
         images[7] = "bench.jpg";
         images[8] = "taverna.jpg";
+        images[9] = "path.jpg";
+        images[10] = "path.jpg";
+        images[11] = "path.jpg";
+        images[12] = "";
+        images[13] = "";
+        images[14] = "";
+        images[15] = "";
+        images[16] = "";
+        images[17] = "";
+        images[18] = "";
+        images[19] = "";
+        images[20] = "";
+        images[21] = "";
+        images[22] = "";
+        images[23] = "";
+        images[24] = "";
 
         //Set the blocked path messages
         var blockedPathMessages = [];
@@ -55,8 +87,11 @@
         blockedPathMessages[6] = "The river is too deep to cross.";
         blockedPathMessages[7] = "The trees are too thick to pass.";
         blockedPathMessages[8] = "A mysterious force holds you back.";
+        blockedPathMessages[9] = "test1";
+        blockedPathMessages[10] = "test2";
+        blockedPathMessages[11] = "test3";
 
-        //Set the blocked path messages
+        //Set the help messages
         var helpMessages = [];
         helpMessages[0] = "";
         helpMessages[1] = "I wonder if you could 'use' something to find out how massive the cave is?";
@@ -67,6 +102,9 @@
         helpMessages[6] = "";
         helpMessages[7] = "";
         helpMessages[8] = "This seems like a great place for music.";
+        helpMessages[9] = "";
+        helpMessages[10] = "";
+        helpMessages[11] = "";
 
         //Create the objects and set their locations
         var items = ["orb"];
@@ -111,30 +149,21 @@
         render();
         function mousedownHandler()
         {
-         button.style.background 
-           = "-webkit-linear-gradient(top, rgba(0,0,0,0.2), rgba(255,255,255,0.3))";
-         button.style.background 
-           = "-moz-linear-gradient(top, rgba(0,0,0,0.2), rgba(255,255,255,0.3))";
-         button.style.background 
-           = "linear-gradient(top, rgba(0,0,0,0.2), rgba(255,255,255,0.3))";
+         button.style.background = "-webkit-linear-gradient(top, rgba(0,0,0,0.2), rgba(255,255,255,0.3))";
+         button.style.background = "-moz-linear-gradient(top, rgba(0,0,0,0.2), rgba(255,255,255,0.3))";
+         button.style.background = "linear-gradient(top, rgba(0,0,0,0.2), rgba(255,255,255,0.3))";
         }
         function mouseoutHandler()
         {
-         button.style.background 
-           = "-webkit-linear-gradient(top, rgba(255,255,255,0.6), rgba(0,0,0,0.2))";
-         button.style.background 
-           = "-moz-linear-gradient(top, rgba(255,255,255,0.6), rgba(0,0,0,0.2))";
-         button.style.background 
-           = "linear-gradient(top, rgba(255,255,255,0.6), rgba(0,0,0,0.2))";
+         button.style.background = "-webkit-linear-gradient(top, rgba(255,255,255,0.6), rgba(0,0,0,0.2))";
+         button.style.background = "-moz-linear-gradient(top, rgba(255,255,255,0.6), rgba(0,0,0,0.2))";
+         button.style.background = "linear-gradient(top, rgba(255,255,255,0.6), rgba(0,0,0,0.2))";
         }
         function clickHandler()
         {
-          button.style.background 
-           = "-webkit-linear-gradient(top, rgba(255,255,255,0.6), rgba(0,0,0,0.2))";
-          button.style.background 
-           = "-moz-linear-gradient(top, rgba(255,255,255,0.6), rgba(0,0,0,0.2))";
-          button.style.background 
-           = "linear-gradient(top, rgba(255,255,255,0.6), rgba(0,0,0,0.2))";
+          button.style.background = "-webkit-linear-gradient(top, rgba(255,255,255,0.6), rgba(0,0,0,0.2))";
+          button.style.background = "-moz-linear-gradient(top, rgba(255,255,255,0.6), rgba(0,0,0,0.2))";
+          button.style.background = "linear-gradient(top, rgba(255,255,255,0.6), rgba(0,0,0,0.2))";
            
           playGame();
         }
@@ -257,8 +286,7 @@
           var itemIndexNumber = items.indexOf(item);
           
           //Does the item exist in the game world and is it at the player's current location?
-          if(itemIndexNumber !== -1 
-          && itemLocations[itemIndexNumber] === mapLocation)
+          if(itemIndexNumber !== -1 && itemLocations[itemIndexNumber] === mapLocation)
           {
             gameMessage = "You take the " + item + ".";
             
@@ -327,7 +355,7 @@
             gameMessage = "You're not carrying it.";
           }
           
-          //If there are no items in the backpack, then tell the player the backpack is empty
+          //If there are no items in the knapsack, then tell the player the knapsack is empty
           if(backpack.length === 0)
           {
             gameMessage += " Your knapsack is empty!";
@@ -353,7 +381,7 @@
                 }
                 else
                 {
-                  gameMessage = "You try and play the flute but it makes no sound here.";
+                  gameMessage = "You try and play the lyre but it makes no sound here.";
                 }
                   break;
                   
@@ -382,7 +410,7 @@
                   {
                     gameMessage = "The old witch takes the orb from your hand. She gives you a lyre!";
                     
-                    //Remove the stone from the player's backpack 
+                    //Remove the orb from the player's backpack 
                   backpack.splice(backpackIndexNumber, 1);
                   
                     //Add the lyre to the world
