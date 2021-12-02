@@ -110,7 +110,7 @@
         helpMessages[1] = "I wonder if you could 'use' something to find out how massive the cave is?";
         helpMessages[2] = "Maybe there is a way to open this gate.";
         helpMessages[3] = "";
-        helpMessages[4] = "Hephaestus could forge you a weapon, but you need the corret material.";
+        helpMessages[4] = "Hephaestus could forge you a weapon, but you need the correct material.";
         helpMessages[5] = "";
         helpMessages[6] = "";
         helpMessages[7] = "";
@@ -143,7 +143,7 @@
         var playersInput = "";
 
         //Initialize the gameMessage
-        var gameMessage = "<br>Welcome young demi-god! King Polydectes demands a gift and requests the head of the Gorgon, Medusa. "
+        var gameMessage = "<br>Welcome young demi-god! King Polydectes demands a gift and requests the head of the gorgon, Medusa. "
         gameMessage += "Try any of these words: north, east, south, west, help.";
 
         //Create an array of actions the game understands and a variable to store the current action
@@ -235,6 +235,7 @@
           switch(action)
           {
             case "north":
+            console.log("Move North!");
               if(mapLocation >= 3)
               {
                 mapLocation -= 3;
@@ -246,6 +247,7 @@
               break;
             
             case "east":
+            console.log("Move East!");
                 if(mapLocation % 3 != 2)
               {
                 mapLocation += 1;
@@ -257,6 +259,7 @@
               break;
               
             case "south":
+            console.log("Move South!");
               if(mapLocation < 6)
               {
                 mapLocation += 3;
@@ -268,6 +271,7 @@
               break;
               
             case "west":
+            console.log("Move West!");
               if(mapLocation % 3 != 0)
               {
                 mapLocation -= 1;
@@ -415,7 +419,7 @@
                   if(mapLocation === 3)
                 {
                   gameMessage 
-                    = "You swing the sword and slay the Gorgon, Medusa! ";
+                    = "You swing the sword and slay Medusa! ";
                   gameMessage 
                     += "You return to the island of Seriphos.";
 
@@ -490,4 +494,4 @@
         }
         </script>
 </body>
-</html>
+</html>\
