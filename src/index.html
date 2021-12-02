@@ -20,10 +20,10 @@
         //Create the map
         var map = [];
         map[0] = "A sleeping Gorgon.";
-        map[1] = "A dark cave. An old witch guards the entrance.";
+        map[1] = "A dark cave. A coven of Graeae guards the entrance.";
         map[2] = "An ancient gate.";
         map[3] = "A mountain pass.";
-        map[4] = "The forge of Vulcan.";
+        map[4] = "The forge of Hephaestus.";
         map[5] = "A mountain pass.";
         map[6] = "A forest.";
         map[7] = "A town that lies in ruins.";
@@ -50,25 +50,25 @@
 
         //Set the images
         var images = [];
-        images[0] = "house.jpg";
+        images[0] = "medusa.png";
         images[1] = "cave.jpg";
-        images[2] = "mountain.jpg";
-        images[3] = "medusa.png";
-        images[4] = "path.jpg";
-        images[5] = "gate.jpg";
-        images[6] = "river.jpg";
-        images[7] = "bench.jpg";
-        images[8] = "taverna.jpg";
-        images[9] = "path.jpg";
-        images[10] = "path.jpg";
-        images[11] = "path.jpg";
-        images[12] = "";
+        images[2] = "gate.jpg";
+        images[3] = "mountain.jpg";
+        images[4] = "";
+        images[5] = "mountain.jpg";
+        images[6] = "";
+        images[7] = "house.jpg";
+        images[8] = "";
+        images[9] = "";
+        images[10] = "house.jpg";
+        images[11] = "";
+        images[12] = "path.jpg";
         images[13] = "";
         images[14] = "";
-        images[15] = "";
+        images[15] = "river.jpg";
         images[16] = "";
-        images[17] = "";
-        images[18] = "";
+        images[17] = "bench.jpg";
+        images[18] = "taverna.jpg";
         images[19] = "";
         images[20] = "";
         images[21] = "";
@@ -107,7 +107,7 @@
         //Set the help messages
         var helpMessages = [];
         helpMessages[0] = "Maybe if you had a sword, you could slay Medusa?";
-        helpMessages[1] = "I wonder if you could 'use' something to find out how massive the cave is?";
+        helpMessages[1] = "The Graeae cannot see. What if they could?";
         helpMessages[2] = "Maybe there is a way to open this gate.";
         helpMessages[3] = "";
         helpMessages[4] = "Hephaestus could forge you a weapon, but you need the correct material.";
@@ -151,7 +151,7 @@
         var action = "";
 
         //An array of items the game understands and a variable to store the current item
-        var itemsIKnow = ["lyre", "orb", "sword"];
+        var itemsIKnow = ["ingot", "lyre", "orb", "sword"];
         var item = "";
 
         //The img element
@@ -236,9 +236,9 @@
           {
             case "north":
             console.log("Move North!");
-              if(mapLocation >= 3)
+              if(mapLocation >= 5)
               {
-                mapLocation -= 3;
+                mapLocation -= 5;
               }
               else
               {
@@ -248,7 +248,7 @@
             
             case "east":
             console.log("Move East!");
-                if(mapLocation % 3 != 2)
+                if(mapLocation % 5 != 4)
               {
                 mapLocation += 1;
               }
@@ -260,9 +260,9 @@
               
             case "south":
             console.log("Move South!");
-              if(mapLocation < 6)
+              if(mapLocation < 10)
               {
-                mapLocation += 3;
+                mapLocation += 5;
               }
               else
               {
@@ -272,7 +272,7 @@
               
             case "west":
             console.log("Move West!");
-              if(mapLocation % 3 != 0)
+              if(mapLocation % 5 != 0)
               {
                 mapLocation -= 1;
               }
@@ -320,7 +320,7 @@
           {
             gameMessage = "You take the " + item + ".";
             
-            //Add the item to the player's backpack 
+            //Add the item to the player's knapsack
             backpack.push(item);
            
             //Remove the item from the game world
@@ -339,46 +339,46 @@
         }
         function dropItem()
         {
-          //Try to drop the item only if the backpack isn't empty
+          //Try to drop the item only if the knapsack isn't empty
           if(backpack.length !== 0)
           {
-            //Find the item's array index number in the backpack
+            //Find the item's array index number in the knapsack
             var backpackIndexNumber = backpack.indexOf(item);
               
-              //The item is in the backpack if backpackIndex number isn't -1
+              //The item is in the knapsack if backpackIndex number isn't -1
             if(backpackIndexNumber !== -1)
             {
             
              //Tell the player that the item has been dropped
                 gameMessage = "You drop the " + item + ".";
              
-             //Add the item from the backpack to the game world 
+             //Add the item from the knapsack to the game world 
              items.push(backpack[backpackIndexNumber]);
              itemLocations.push(mapLocation); 
              
-             //Remove the item from the player's backpack 
+             //Remove the item from the player's knapsack
              backpack.splice(backpackIndexNumber, 1);
             }
             else
             {
-              //Message if the player tries to drop something that's not in the backpack
+              //Message if the player tries to drop something that's not in the knapsack
               gameMessage = "You can't do that.";
             }
           }
           else
           {
-            //Message if the backpack is empty
+            //Message if the knapsack is empty
             gameMessage = "You're not carrying anything.";
           }
         }
         function useItem()
         {
-          //1. Find out if the item is in the backpack
+          //1. Find out if the item is in the knapsack
           
-          //Find the item's array index number in the backpack
+          //Find the item's array index number in the knapsack
           var backpackIndexNumber = backpack.indexOf(item);
                
-          //If the index number is -1, then it isn't in the backpack.
+          //If the index number is -1, then it isn't in the knapsack.
           //Tell the player that he or she isn't carrying it.
           if(backpackIndexNumber === -1)
           {
@@ -400,7 +400,25 @@
                   if(mapLocation === 8)
                 {
                   gameMessage = "Beautiful music fills the air.";
-                  gameMessage += "The god Hermes steps outside and hands you a sword!";
+                  gameMessage += "The god Hermes steps outside and hands you an iron ingot!";
+                  
+                  //Add the ingot to the world
+                  items.push("ingot");
+                  itemLocations.push(mapLocation);
+                  
+                  //Reset the location's help message
+                  helpMessages[mapLocation] = "";
+                }
+                else
+                {
+                  gameMessage = "You try and play the lyre but it makes no sound here.";
+                }
+                  break;
+
+                  case "ingot":
+                  if(mapLocation === 4)
+                {
+                  gameMessage = "Hephaestus creates a sword for you.";
                   
                   //Add the sword to the world
                   items.push("sword");
@@ -411,7 +429,7 @@
                 }
                 else
                 {
-                  gameMessage = "You try and play the lyre but it makes no sound here.";
+                  gameMessage = "Your ingot cannot be used here.";
                 }
                   break;
                   
@@ -438,7 +456,7 @@
                 case "orb":
                   if(mapLocation === 1)
                   {
-                    gameMessage = "The old witch takes the orb from your hand. She gives you a lyre!";
+                    gameMessage = "The Graeae takes the orb from your hand. She gives you a lyre!";
                     
                     //Remove the orb from the player's backpack 
                   backpack.splice(backpackIndexNumber, 1);
@@ -494,4 +512,4 @@
         }
         </script>
 </body>
-</html>\
+</html>
