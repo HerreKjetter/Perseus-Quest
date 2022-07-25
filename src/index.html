@@ -54,27 +54,27 @@
         images[1] = "cave.jpg";
         images[2] = "gate.jpg";
         images[3] = "mountain.jpg";
-        images[4] = "";
+        images[4] = "forge.jpg";
         images[5] = "mountain.jpg";
-        images[6] = "";
+        images[6] = "forest.jpg";
         images[7] = "house.jpg";
-        images[8] = "";
-        images[9] = "";
+        images[8] = "grass.jpg";
+        images[9] = "forest.jpg";
         images[10] = "house.jpg";
-        images[11] = "";
+        images[11] = "flowers.jpg";
         images[12] = "path.jpg";
-        images[13] = "";
-        images[14] = "";
+        images[13] = "cart.jpg";
+        images[14] = "swamp.jpg";
         images[15] = "river.jpg";
-        images[16] = "";
+        images[16] = "tower.jpg";
         images[17] = "bench.jpg";
         images[18] = "taverna.jpg";
-        images[19] = "";
-        images[20] = "";
-        images[21] = "";
-        images[22] = "";
-        images[23] = "";
-        images[24] = "";
+        images[19] = "temple.jpg";
+        images[20] = "cliff.jpg";
+        images[21] = "ocean.jpg";
+        images[22] = "port.jpg";
+        images[23] = "cliff.jpg";
+        images[24] = "shipwreck.jpg";
 
         //Set the blocked path messages
         var blockedPathMessages = [];
@@ -88,7 +88,7 @@
         blockedPathMessages[7] = "";
         blockedPathMessages[8] = "";
         blockedPathMessages[9] = "The trees are too thick to pass.";
-        blockedPathMessages[10] = "The river is too deep to cross.";
+        blockedPathMessages[10] = "The house blocks your path.";
         blockedPathMessages[11] = "";
         blockedPathMessages[12] = "";
         blockedPathMessages[13] = "";
@@ -106,8 +106,8 @@
 
         //Set the help messages
         var helpMessages = [];
-        helpMessages[0] = "Maybe if you had a sword, you could slay Medusa?";
-        helpMessages[1] = "The Graeae cannot see. What if they could?";
+        helpMessages[0] = "Maybe if you had a weapon, you could slay Medusa?";
+        helpMessages[1] = "Deino, Enyo, and Pemphredo cannot see. What if they could?";
         helpMessages[2] = "Maybe there is a way to open this gate.";
         helpMessages[3] = "";
         helpMessages[4] = "Hephaestus could forge you a weapon, but you need the correct material.";
@@ -134,7 +134,7 @@
 
         //Create the objects and set their locations
         var items = ["orb"];
-        var itemLocations = [10];
+        var itemLocations = [15];
 
         //An array to store what the player is carrying
         var backpack = [];
@@ -260,7 +260,7 @@
               
             case "south":
             console.log("Move South!");
-              if(mapLocation < 10)
+              if(mapLocation < 20)
               {
                 mapLocation += 5;
               }
@@ -397,10 +397,13 @@
             switch(item)
             {
                 case "lyre":
-                  if(mapLocation === 8)
+                  if(mapLocation === 18)
                 {
                   gameMessage = "Beautiful music fills the air.";
                   gameMessage += "The god Hermes steps outside and hands you an iron ingot!";
+
+                  //Remove the lyre from the player's backpack 
+                  backpack.splice(backpackIndexNumber, 1);
                   
                   //Add the ingot to the world
                   items.push("ingot");
@@ -419,6 +422,9 @@
                   if(mapLocation === 4)
                 {
                   gameMessage = "Hephaestus creates a sword for you.";
+
+                  //Remove the ingot from the player's backpack 
+                  backpack.splice(backpackIndexNumber, 1);
                   
                   //Add the sword to the world
                   items.push("sword");
@@ -434,14 +440,14 @@
                   break;
                   
                 case "sword":
-                  if(mapLocation === 3)
+                  if(mapLocation === 0)
                 {
                   gameMessage 
                     = "You swing the sword and slay Medusa! ";
                   gameMessage 
                     += "You return to the island of Seriphos.";
 
-                  location.assign("https://github.com/KingArthurian/PerseusQuest");
+                  location.assign("https://github.com/HerreKjetter/Perseus-Quest");
                   
                   //Reset the location's help message
                   helpMessages[mapLocation] = "";  
@@ -456,7 +462,7 @@
                 case "orb":
                   if(mapLocation === 1)
                   {
-                    gameMessage = "The Graeae takes the orb from your hand. She gives you a lyre!";
+                    gameMessage = "Enyo takes the orb from your hand. Deino gives you a lyre!";
                     
                     //Remove the orb from the player's backpack 
                   backpack.splice(backpackIndexNumber, 1);
@@ -471,7 +477,7 @@
                 else
                 {
                     gameMessage 
-                      = "You fumble with the strange orb in your knapsack.";
+                      = "The orb feels strange.";
                   }
                   break;			          
                }
