@@ -37,7 +37,7 @@
         map[15] = "The edge of a river.";
         map[16] = "A watch tower.";
         map[17] = "A stone bench.";
-        map[18] = "An isolated taverna. Faint music comes from inside.";
+        map[18] = "An isolated garden. Faint music can be heard in the wind.";
         map[19] = "A ruined temple.";
         map[20] = "A cliff.";
         map[21] = "The ocean.";
@@ -125,7 +125,7 @@
         helpMessages[16] = "";
         helpMessages[17] = "";
         helpMessages[18] = "This seems like a great place for music.";
-        helpMessages[19] = "Maybe if you make a sacrifice?";
+        helpMessages[19] = "An old man sits on the roof. How did he get there? Can I get there?";
         helpMessages[20] = "";
         helpMessages[21] = "";
         helpMessages[22] = "";
@@ -151,7 +151,7 @@
         var action = "";
 
         //An array of items the game understands and a variable to store the current item
-        var itemsIKnow = ["ingot", "lyre", "orb", "sword"];
+        var itemsIKnow = ["adamant", "lyre", "sandals", "orb", "harpe"];
         var item = "";
 
         //The img element
@@ -399,14 +399,14 @@
                 case "lyre":
                   if(mapLocation === 18)
                 {
-                  gameMessage = "Beautiful music fills the air.";
-                  gameMessage += "The god Hermes steps outside and hands you an iron ingot!";
+                  gameMessage = "Beautiful music fills the air causing the Hesperides to dance around you.";
+                  gameMessage += "The god Hermes appears and hands you a pair of winged sandals!";
 
                   //Remove the lyre from the player's backpack 
                   backpack.splice(backpackIndexNumber, 1);
                   
-                  //Add the ingot to the world
-                  items.push("ingot");
+                  //Add the sandals to the world
+                  items.push("sandals");
                   itemLocations.push(mapLocation);
                   
                   //Reset the location's help message
@@ -418,16 +418,17 @@
                 }
                   break;
 
-                  case "ingot":
-                  if(mapLocation === 4)
+                  case "sandals":
+                  if(mapLocation === 19)
                 {
-                  gameMessage = "Hephaestus creates a sword for you.";
+                  gameMessage = "The sandals carry you to the top of the roof.";
+                  gameMessage += "The old man reveals himself as Zeus and hands you a adamant.";
 
-                  //Remove the ingot from the player's backpack 
+                  //Remove the lyre from the player's backpack 
                   backpack.splice(backpackIndexNumber, 1);
                   
-                  //Add the sword to the world
-                  items.push("sword");
+                  //Add the adamant to the world
+                  items.push("adamant");
                   itemLocations.push(mapLocation);
                   
                   //Reset the location's help message
@@ -435,19 +436,40 @@
                 }
                 else
                 {
-                  gameMessage = "Your ingot cannot be used here.";
+                  gameMessage = "The wings flap on your sandals, but they don't carry you anywhere.";
+                }
+                  break;
+
+                  case "adamant":
+                  if(mapLocation === 4)
+                {
+                  gameMessage = "Hephaestus creates a harpe for you.";
+
+                  //Remove the adamant from the player's backpack 
+                  backpack.splice(backpackIndexNumber, 1);
+                  
+                  //Add the harpe to the world
+                  items.push("harpe");
+                  itemLocations.push(mapLocation);
+                  
+                  //Reset the location's help message
+                  helpMessages[mapLocation] = "";
+                }
+                else
+                {
+                  gameMessage = "Your adamant cannot be used here.";
                 }
                   break;
                   
-                case "sword":
+                case "harpe":
                   if(mapLocation === 0)
                 {
                   gameMessage 
-                    = "You swing the sword and slay Medusa! ";
+                    = "You swing the harpe and slay Medusa! ";
                   gameMessage 
                     += "You return to the island of Seriphos.";
 
-                  location.assign("https://github.com/HerreKjetter/Perseus-Quest");
+                  location.assign("end.html");
                   
                   //Reset the location's help message
                   helpMessages[mapLocation] = "";  
@@ -455,7 +477,7 @@
                 else
                 {
                   gameMessage 
-                    = "You swing the sword listlessly.";
+                    = "You swing the harpe listlessly.";
                 }
                   break;
                   
