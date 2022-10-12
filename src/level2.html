@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Perseus' Quest</title>
+    <link rel="stylesheet" href="greece.css">
+</head>
+<body>
+    <div id="stage">
+        <h1>Perseus' Quest</h1>
+        <img src="" width="300" height="267">
+        <p id="output"></p>
+        <input id="input" type="text"> 
+        <button>enter</button>
+    </div>
+
+    <script>
+        //Create the map
+        var map = [];
+        map[0] = "A mountain pass.";
+        map[1] = "The Nile river.";
+        map[2] = "The desert.";
+        map[3] = "A mountain pass.";
+        map[4] = "A house.";
+        map[5] = "A campfire surrounded by tents.";
+        map[6] = "The city";
+        map[7] = "The walls of the city.";
+        map[8] = "The watch tower.";
+        map[9] = "A vast area of shrubland.";
+        map[10] = "A road.";
+        map[11] = "A cliff.";
+        map[12] = "A port.";
+        map[13] = "A crowded beach.";
+        map[14] = "Andromeda chained to a rock.";
+        map[15] = "The Cetus.";
+
+        //Set the player's start location
+        var mapLocation = 12;
+
+        //Set the images
+        var images = [];
+        images[0] = "mountain.jpg";
+        images[1] = "river.jpg";
+        images[2] = "desert.jpg";
+        images[3] = "mountain.jpg";
+        images[4] = "house.jpg";
+        images[5] = "campfire.jpg";
+        images[6] = "aethiopia.jpg";
+        images[7] = "walls.jpg";
+        images[8] = "tower.jpg";
+        images[9] = "shrubland.jpg";
+        images[10] = "path.jpg";
+        images[11] = "cliff.jpg";
+        images[12] = "port.jpg";
+        images[13] = "beach.jpg";
+        images[14] = "andromeda.jpg";
+        images[15] = "cetus.jpg";
+
+        //Set the blocked path messages
+        var blockedPathMessages = [];
+        blockedPathMessages[0] = "The mountains block your path.";
+        blockedPathMessages[1] = "You cannot cross this river.";
+        blockedPathMessages[2] = "The desert is to dangerous.";
+        blockedPathMessages[3] = "The mountains block your path.";
+        blockedPathMessages[4] = "This house blocks your path.";
+        blockedPathMessages[5] = "";
+        blockedPathMessages[6] = "";
+        blockedPathMessages[7] = "The walls block your path.";
+        blockedPathMessages[8] = "There is nothing out there. No need to go that way.";
+        blockedPathMessages[9] = "";
+        blockedPathMessages[10] = "";
+        blockedPathMessages[11] = "It would be wise to not jump here.";
+        blockedPathMessages[12] = "You cannot set sail yet.";
+        blockedPathMessages[13] = "The crowd of citizens blocks your path.";
+        blockedPathMessages[14] = "You cannot cross the ocean.";
+        blockedPathMessages[15] = "The Cetus blocks your path.";
+
+
+        //Set the help messages
+        var helpMessages = [];
+        helpMessages[0] = "";
+        helpMessages[1] = "";
+        helpMessages[2] = "";
+        helpMessages[3] = "There is something shiny in the mountains. How do I get up there?";
+        helpMessages[4] = "A drunken citizen has a weapon. How can I get it without being noticed?";
+        helpMessages[5] = "A warrior sitting by the fire carries a knapsack. He won't give it up so easily.";
+        helpMessages[6] = "";
+        helpMessages[7] = "";
+        helpMessages[8] = "";
+        helpMessages[9] = "";
+        helpMessages[10] = "";
+        helpMessages[11] = "";
+        helpMessages[12] = "";
+        helpMessages[13] = "";
+        helpMessages[14] = "";
+        helpMessages[15] = "No mortal weapon can kill this monster. What can?";
+
+        //Create the objects and set their locations
+        var items = ["sandals"];
+        var itemLocations = [12];
+
+        //An array to store what the player is carrying
+        var backpack = [];
+
+        //Initialize the player's input
+        var playersInput = "";
+
+        //Initialize the gameMessage
+        var gameMessage = "<br>Andromeda has been stripped naked and chained to a rock on the shore as a sacrifice. "
+        gameMessage += "You must save her and the kingdom. Many of your items have been stolen. Find them! "
+        gameMessage += "Try any of these words: north, east, south, west, help.";
+
+        //Create an array of actions the game understands and a variable to store the current action
+        var actionsIKnow = ["north","east", "south", "west", "help", "take", "use", "drop"];
+        var action = "";
+
+        //An array of items the game understands and a variable to store the current item
+        var itemsIKnow = ["sandals", "harpe", "helm", "head"];
+        var item = "";
+
+        //The img element
+        var image = document.querySelector("img");
+
+        //The input and output fields
+        var output = document.querySelector("#output");
+        var input = document.querySelector("#input");
+
+        //The button
+        var button = document.querySelector("button");
+        button.style.cursor = "pointer";
+        button.addEventListener("click", clickHandler, false);
+        button.addEventListener("mousedown", mousedownHandler, false);
+        button.addEventListener("mouseout", mouseoutHandler, false);
+
+        //Listen for enter key presses
+        window.addEventListener("keydown", keydownHandler, false);
+
+        //Dispay the player's location
+        render();
+        function mousedownHandler()
+        {
+         button.style.background = "-webkit-linear-gradient(top, rgba(0,0,0,0.2), rgba(255,255,255,0.3))";
+         button.style.background = "-moz-linear-gradient(top, rgba(0,0,0,0.2), rgba(255,255,255,0.3))";
+         button.style.background = "linear-gradient(top, rgba(0,0,0,0.2), rgba(255,255,255,0.3))";
+        }
+        function mouseoutHandler()
+        {
+         button.style.background = "-webkit-linear-gradient(top, rgba(255,255,255,0.6), rgba(0,0,0,0.2))";
+         button.style.background = "-moz-linear-gradient(top, rgba(255,255,255,0.6), rgba(0,0,0,0.2))";
+         button.style.background = "linear-gradient(top, rgba(255,255,255,0.6), rgba(0,0,0,0.2))";
+        }
+        function clickHandler()
+        {
+          button.style.background = "-webkit-linear-gradient(top, rgba(255,255,255,0.6), rgba(0,0,0,0.2))";
+          button.style.background = "-moz-linear-gradient(top, rgba(255,255,255,0.6), rgba(0,0,0,0.2))";
+          button.style.background = "linear-gradient(top, rgba(255,255,255,0.6), rgba(0,0,0,0.2))";
+           
+          playGame();
+        }
+        function keydownHandler(event)
+        {
+          if(event.keyCode === 13)
+          {
+            playGame();
+          }
+        }
+        function playGame()
+        {
+          //Get the player's input and convert it to lowercase
+          playersInput = input.value;
+          playersInput = playersInput.toLowerCase();
+          
+          //Reset these variables from the previous turn
+          gameMessage = "";
+          action = "";
+          
+          //Figure out the player's action
+          for(i = 0; i < actionsIKnow.length; i++)
+          {
+            if(playersInput.indexOf(actionsIKnow[i]) !== -1)
+            {
+              action = actionsIKnow[i];
+              console.log("player's action: " + action);
+              break;
+            }
+          }
+          
+          //Figure out the item the player wants
+          for(i = 0; i < itemsIKnow.length; i++)
+          {
+            if(playersInput.indexOf(itemsIKnow[i]) !== -1)
+            {
+              item = itemsIKnow[i];
+              console.log("player's item: " + item);
+            }
+          }
+          
+          //Choose the correct action
+          switch(action)
+          {
+            case "north":
+            console.log("Move North!");
+              if(mapLocation >= 4)
+              {
+                mapLocation -= 4;
+              }
+              else
+              {
+                gameMessage = blockedPathMessages[mapLocation];
+              }
+              break;
+            
+            case "east":
+            console.log("Move East!");
+                if(mapLocation % 4 != 3)
+              {
+                mapLocation += 1;
+              }
+              else
+              {
+                gameMessage = blockedPathMessages[mapLocation];
+              }
+              break;
+              
+            case "south":
+            console.log("Move South!");
+              if(mapLocation < 12)
+              {
+                mapLocation += 4;
+              }
+              else
+              {
+                gameMessage = blockedPathMessages[mapLocation];
+              }
+              break;
+              
+            case "west":
+            console.log("Move West!");
+              if(mapLocation % 4 != 0)
+              {
+                mapLocation -= 1;
+              }
+              else
+              {
+                gameMessage = blockedPathMessages[mapLocation];
+              }
+              break;
+              
+            case "help":
+              //Display a hint if there is one for this location
+              if(helpMessages[mapLocation] !== "")
+              {
+                gameMessage = helpMessages[mapLocation] + " ";
+              }
+              gameMessage += "Try any of these words: north, east, south, west, take [item], drop [item], use [item].";
+              break;
+              
+            case "take":
+              takeItem()
+                  break;
+                
+                case "drop":
+                  dropItem();
+                  break;
+                  
+                case "use":
+                  useItem();
+                  break;
+                      
+                default:
+                  gameMessage = "That is not a command.";
+          }
+          
+          //Render the game
+          render();
+        }
+        function takeItem()
+        {
+          //Find the index number of the item in the items array
+          var itemIndexNumber = items.indexOf(item);
+          
+          //Does the item exist in the game world and is it at the player's current location?
+          if(itemIndexNumber !== -1 && itemLocations[itemIndexNumber] === mapLocation)
+          {
+            gameMessage = "You take the " + item + ".";
+            
+            //Add the item to the player's knapsack
+            backpack.push(item);
+           
+            //Remove the item from the game world
+            items.splice(itemIndexNumber, 1);
+            itemLocations.splice(itemIndexNumber, 1);
+                  
+            //Display in the console for testing
+            console.log("World items: " + items);
+            console.log("knapsack items: " + backpack);
+          }
+          else
+          {
+            //Message if you try and take an item that isn't in the current location
+            gameMessage = "You can't do that.";
+          }
+        }
+        function dropItem()
+        {
+          //Try to drop the item only if the knapsack isn't empty
+          if(backpack.length !== 0)
+          {
+            //Find the item's array index number in the knapsack
+            var backpackIndexNumber = backpack.indexOf(item);
+              
+              //The item is in the knapsack if backpackIndex number isn't -1
+            if(backpackIndexNumber !== -1)
+            {
+            
+             //Tell the player that the item has been dropped
+                gameMessage = "You drop the " + item + ".";
+             
+             //Add the item from the knapsack to the game world 
+             items.push(backpack[backpackIndexNumber]);
+             itemLocations.push(mapLocation); 
+             
+             //Remove the item from the player's knapsack
+             backpack.splice(backpackIndexNumber, 1);
+            }
+            else
+            {
+              //Message if the player tries to drop something that's not in the knapsack
+              gameMessage = "You can't do that.";
+            }
+          }
+          else
+          {
+            //Message if the knapsack is empty
+            gameMessage = "You're not carrying anything.";
+          }
+        }
+        function useItem()
+        {
+          //1. Find out if the item is in the knapsack
+          
+          //Find the item's array index number in the knapsack
+          var backpackIndexNumber = backpack.indexOf(item);
+               
+          //If the index number is -1, then it isn't in the knapsack.
+          //Tell the player that he or she isn't carrying it.
+          if(backpackIndexNumber === -1)
+          {
+            gameMessage = "You're not carrying it.";
+          }
+          
+          //If there are no items in the knapsack, then tell the player the knapsack is empty
+          if(backpack.length === 0)
+          {
+            gameMessage += " You carry nothing.";
+          }
+           
+          //2. If the item is found in the knapsack figure out what to do with it
+          if(backpackIndexNumber !== -1)
+          {
+            switch(item)
+            {
+                case "sandals":
+                  if(mapLocation === 3)
+                {
+                  gameMessage = "You fly to the top of mountain. ";
+                  gameMessage += "You notice your helm of darkness.";
+                  
+                  //Add the helm to the world
+                  items.push("helm");
+                  itemLocations.push(mapLocation);
+                  
+                  //Reset the location's help message
+                  helpMessages[mapLocation] = "";
+                }
+                else
+                {
+                  gameMessage = "The wings flap on your sandals, but they don't carry you anywhere.";
+                }
+                  break;
+
+                  case "helm":
+                  if(mapLocation === 4)
+                {
+                  gameMessage = "You sneak into the house. You notice your harpe on the table.";
+                  
+                  //Add the harpe to the world
+                  items.push("harpe");
+                  itemLocations.push(mapLocation);
+                  
+                  //Reset the location's help message
+                  helpMessages[mapLocation] = "";
+                }
+                else
+                {
+                  gameMessage = "You turn invisible, but what are you hiding from?";
+                }
+                  break;
+
+                  case "harpe":
+                  if(mapLocation === 5)
+                {
+                  gameMessage = "You kill the thief. The knapsack contains the head of Medusa.";
+                  
+                  //Add the head of Medusa to the world
+                  items.push("head");
+                  itemLocations.push(mapLocation);
+                  
+                  //Reset the location's help message
+                  helpMessages[mapLocation] = "";
+                }
+                else
+                {
+                  gameMessage = "You swing your harpe listlessly.";
+                }
+                  break;
+                  
+                case "head":
+                  if(mapLocation === 15)
+                {
+                  gameMessage 
+                    = "You turn the Cetus to stone. ";
+                  gameMessage 
+                    += "Aethiopia and Andromeda are saved.";
+
+                  location.assign("end.html");
+                  
+                  //Reset the location's help message
+                  helpMessages[mapLocation] = "";  
+                }
+                else
+                {
+                  gameMessage 
+                    = "You cannot use that here.";
+                }
+                  break;
+               }
+           }
+        }
+        function render()
+        {
+          //Render the location
+          output.innerHTML = map[mapLocation];
+          image.src = "../images/" + images[mapLocation];
+          
+          //Display an item if there's one in this location
+          //1. Loop through all the game items
+          for(var i = 0; i < items.length; i++)
+          {
+           //Find out if there's an item at this location
+           if(mapLocation === itemLocations[i])
+           {
+             //Display it
+             output.innerHTML 
+              += "<br>You see a <strong>" 
+              + items[i]
+              + "</strong> here.";
+           }
+          }
+          
+          //Display the player's knapsack contents
+          if(backpack.length !== 0)
+          {
+            output.innerHTML += "<br>You are carrying: " + backpack.join(", ");  
+          }
+          
+          //Display the game message
+          output.innerHTML += "<br><em>" + gameMessage + "</em>";
+          
+          //Clear the input field
+          input.value = "";
+        }
+        </script>
+</body>
+</html>
