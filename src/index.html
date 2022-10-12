@@ -23,7 +23,7 @@
         map[1] = "A dark cave. A coven of Graeae guards the entrance.";
         map[2] = "An ancient gate.";
         map[3] = "A mountain pass.";
-        map[4] = "The forge of Hephaestus.";
+        map[4] = "A forge of Hephaestus.";
         map[5] = "A mountain pass.";
         map[6] = "A forest.";
         map[7] = "A town that lies in ruins.";
@@ -46,7 +46,7 @@
         map[24] = "A shipwreck.";
 
         //Set the player's start location
-        var mapLocation = 12;
+        var mapLocation = 22;
 
         //Set the images
         var images = [];
@@ -106,9 +106,9 @@
 
         //Set the help messages
         var helpMessages = [];
-        helpMessages[0] = "Maybe if you had a weapon, you could slay Medusa?";
+        helpMessages[0] = "How do you kill a gorgon?";
         helpMessages[1] = "Deino, Enyo, and Pemphredo cannot see. What if they could?";
-        helpMessages[2] = "Maybe there is a way to open this gate.";
+        helpMessages[2] = "Maybe there is a way to open this gate?";
         helpMessages[3] = "";
         helpMessages[4] = "Hephaestus could forge you a weapon, but you need the correct material.";
         helpMessages[5] = "";
@@ -116,7 +116,7 @@
         helpMessages[7] = "";
         helpMessages[8] = "";
         helpMessages[9] = "";
-        helpMessages[10] = "";
+        helpMessages[10] = "There is something stuck in the keyhole.";
         helpMessages[11] = "";
         helpMessages[12] = "";
         helpMessages[13] = "";
@@ -126,15 +126,15 @@
         helpMessages[17] = "";
         helpMessages[18] = "This seems like a great place for music.";
         helpMessages[19] = "An old man sits on the roof. How did he get there? Can I get there?";
-        helpMessages[20] = "";
+        helpMessages[20] = "A woman guards an object. Should I steal it? I don't want to be noticed.";
         helpMessages[21] = "";
         helpMessages[22] = "";
         helpMessages[23] = "";
         helpMessages[24] = "";
 
         //Create the objects and set their locations
-        var items = ["orb"];
-        var itemLocations = [15];
+        var items = ["orb", "key"];
+        var itemLocations = [15, 10];
 
         //An array to store what the player is carrying
         var backpack = [];
@@ -151,7 +151,7 @@
         var action = "";
 
         //An array of items the game understands and a variable to store the current item
-        var itemsIKnow = ["adamant", "lyre", "sandals", "orb", "harpe"];
+        var itemsIKnow = ["adamant", "lyre", "sandals", "orb", "harpe", "key", "helm", "shield"];
         var item = "";
 
         //The img element
@@ -304,7 +304,7 @@
                   break;
                       
                 default:
-                  gameMessage = "I don't understand that.";
+                  gameMessage = "That is not a command.";
           }
           
           //Render the game
@@ -391,18 +391,40 @@
             gameMessage += " Your knapsack is empty!";
           }
            
-          //2. If the item is found in the backpack figure out what to do with it
+          //2. If the item is found in the knapsack figure out what to do with it
           if(backpackIndexNumber !== -1)
           {
             switch(item)
             {
+              case "orb":
+                  if(mapLocation === 1)
+                  {
+                    gameMessage = "Enyo takes the orb from your hand. Deino hands you a lyre!";
+                    
+                    //Remove the orb from the player's knapsack 
+                  backpack.splice(backpackIndexNumber, 1);
+                  
+                    //Add the lyre to the world
+                    items.push("lyre");
+                    itemLocations.push(mapLocation);
+                    
+                    //Reset the location's help message
+                  helpMessages[mapLocation] = "";
+                  }
+                else
+                {
+                    gameMessage 
+                      = "The orb feels strange.";
+                  }
+                  break;
+
                 case "lyre":
                   if(mapLocation === 18)
                 {
-                  gameMessage = "Beautiful music fills the air causing the Hesperides to dance around you.";
+                  gameMessage = "Beautiful music fills the air causing the Hesperides to dance around you. ";
                   gameMessage += "The god Hermes appears and hands you a pair of winged sandals!";
 
-                  //Remove the lyre from the player's backpack 
+                  //Remove the lyre from the player's knapsack
                   backpack.splice(backpackIndexNumber, 1);
                   
                   //Add the sandals to the world
@@ -421,11 +443,8 @@
                   case "sandals":
                   if(mapLocation === 19)
                 {
-                  gameMessage = "The sandals carry you to the top of the roof.";
+                  gameMessage = "The sandals carry you to the top of the roof. ";
                   gameMessage += "The old man reveals himself as Zeus and hands you a adamant.";
-
-                  //Remove the lyre from the player's backpack 
-                  backpack.splice(backpackIndexNumber, 1);
                   
                   //Add the adamant to the world
                   items.push("adamant");
@@ -445,7 +464,7 @@
                 {
                   gameMessage = "Hephaestus creates a harpe for you.";
 
-                  //Remove the adamant from the player's backpack 
+                  //Remove the adamant from the player's knapsack
                   backpack.splice(backpackIndexNumber, 1);
                   
                   //Add the harpe to the world
@@ -465,11 +484,11 @@
                   if(mapLocation === 0)
                 {
                   gameMessage 
-                    = "You swing the harpe and slay Medusa! ";
+                    = "You swing the harpe and slay Medusa! From her neck sprangs Pegasus and Chrysaor. ";
                   gameMessage 
-                    += "You return to the island of Seriphos.";
+                    += "You set sail for Seriphos.";
 
-                  location.assign("end.html");
+                  location.assign("scene2.html");
                   
                   //Reset the location's help message
                   helpMessages[mapLocation] = "";  
@@ -480,17 +499,17 @@
                     = "You swing the harpe listlessly.";
                 }
                   break;
-                  
-                case "orb":
-                  if(mapLocation === 1)
+
+                  case "key":
+                  if(mapLocation === 2)
                   {
-                    gameMessage = "Enyo takes the orb from your hand. Deino gives you a lyre!";
+                    gameMessage = "You have opened a gate to Tartarus. Hades appears before you and hands you a helm of darkness.";
                     
-                    //Remove the orb from the player's backpack 
+                    //Remove the key from the player's knapsack
                   backpack.splice(backpackIndexNumber, 1);
                   
-                    //Add the lyre to the world
-                    items.push("lyre");
+                    //Add the helm to the world
+                    items.push("helm");
                     itemLocations.push(mapLocation);
                     
                     //Reset the location's help message
@@ -499,9 +518,43 @@
                 else
                 {
                     gameMessage 
-                      = "The orb feels strange.";
+                      = "You can't use that here.";
                   }
-                  break;			          
+                  break;
+
+                  case "helm":
+                  if(mapLocation === 20)
+                  {
+                    gameMessage = "You try to sneak pass Athena, but she knows you are there. She is impressed with your determination and hands you a polished shield.";
+                  
+                    //Add the shield to the world
+                    items.push("shield");
+                    itemLocations.push(mapLocation);
+                    
+                    //Reset the location's help message
+                  helpMessages[mapLocation] = "";
+                  }
+                else
+                {
+                    gameMessage 
+                      = "You turn invisible, but what are you hiding from?";
+                  }
+                  break;
+
+                  case "shield":
+                  if(mapLocation === 0)
+                  {
+                    gameMessage = "Using the reflection in the shield, you notice that Medusa's weak spot is her neck. You need a harpe to chop it off.";
+                    
+                    //Reset the location's help message
+                  helpMessages[mapLocation] = "";
+                  }
+                else
+                {
+                    gameMessage 
+                      = "You admire your reflection in the shield.";
+                  }
+                  break;
                }
            }
         }
@@ -526,7 +579,7 @@
            }
           }
           
-          //Display the player's backpack contents
+          //Display the player's knapsack contents
           if(backpack.length !== 0)
           {
             output.innerHTML += "<br>You are carrying: " + backpack.join(", ");  
